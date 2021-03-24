@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Details Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    html{
+  height: 100%;
+  background-image: linear-gradient(#068d6b,#73ddbd);
+  background-repeat: no-repeat;
+  font-family: sans-serif;
+  color: #044e36;
+  background-size: auto;
+}
+.main{
+  width: 400px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+}
+h1{
+  text-align: center;
+  color: #fff;
+}
+form{
+  background-color: #fff;
+  padding: 15px;
+  border-radius:10px;
+}
+input[type="text"],input[type="email"]{
+  width: 350px;
+  height: 30px;
+  font-size: 1em;
+  background: #fff;
+  color: #2F4F4F;
+  padding: 6px;
+  margin: 4px 0px;
+  border-radius:4px;
+  border: 1px solid gray
+}
+button{
+  margin-top: 20px;
+  font-size: 0.8em;
+  padding: 8px 160px;
+  color: #044e36;
+  background-color: rgb(173, 230, 203);
+  border-radius: 2px;
+  margin:10px;
+  border: 0;
+}
+.tasksBoard{
+  background-color: #fff;
+  margin-top: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 40px;
+  border-radius:10px;
+}
+ul{
+  list-style: none;
+}
+li{
+  border-bottom: 1px solid #53BDFF;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  font-size: 1.1em;
+  color: #2F4F4F;
+}
+#clear {
+  float: right;
+  text-align: right;
+  color: #3B1FB8;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+.delete{
+  background-color:#044e36;
+  padding: 0px 3px 0px 3px;
+  color: #fff;
+  cursor: pointer;
+}
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <h1>Details</h1>
+      <form action="index.html" method="post">
+        <input type="text" placeholder="Enter name" class="name">
+        <input type="text" placeholder="Phone no." class="phone">
+        <input type="email" placeholder="Email id" class="email">
+        <button  type="submit"><strong>ADD</strong></button>
+      </form>
+      <div class="tasksBoard">
+        <ul>
+        </ul>
+        <a id="clear">Clear</a>
+      </div>
+    </div>
+    <script>
+    loadEvents();
+// load every event in the page
+function loadEvents(){
+  document.querySelector('form').addEventListener('submit',submit);
+  document.getElementById('clear').addEventListener('click',clearList);
+  // recently added
+  document.querySelector('ul').addEventListener('click',deleteTask);
+}
+function clearList(e){
+  // setting the ul innerHML to an empty string
+  let ul = document.querySelector('ul').innerHTML = '';
+}
+
+function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}
+function validatePhone(phone)
+{
+  var phoneno = /^\d{10}$/;
+  if(phone.match(phoneno))
+        {
+      return true;
+        }
+      else
+        {
+        return false;
+        }
+}
+
+// sumbit data function
+function submit(e){
+  e.preventDefault();
+  let name = document.querySelector('.name');
+  let email= document.querySelector('.email');
+  let phone= document.querySelector('.phone');
+  if(name.value.length<=3 || !validateEmail(email.value) || !validatePhone(phone.value))
+    {
+  alert("something is incorrect");
+    }
+    else{
+      
+        addTask(name.value,email.value,phone.value);
+        name.value = '';
+  email.value='';
+  phone.value='';
+    }
+
+}
+// add tasks
+function addTask(name,email,phone){
+  let ul = document.querySelector('ul');
+  let li = document.createElement('li');
+  li.innerHTML = `<span class="delete">×</span> <span>   ${name}</span><span>    ${phone}</span> <span>   ${email}</span>`;
+  ul.appendChild(li);
+  document.querySelector('.tasksBoard').style.display = 'block';
+}
+// delete task
+function deleteTask(e){
+    if(e.target.className == 'delete')
+    {
+  let remove = e.target.parentNode;
+  let parentNode = remove.parentNode;
+  parentNode.removeChild(remove);
+    }
+}
+</script>
+  </body>
+</html>
